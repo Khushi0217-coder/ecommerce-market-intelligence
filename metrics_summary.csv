@@ -1,0 +1,7 @@
+metric,value
+Category Coverage (%),100.0
+Price Accuracy (%),76.5
+Precision@1 Keyword (%),0.0
+Precision@3 Keyword (%),0.0
+Precision@1 Price (%),56.00000000000001
+Precision@3 Price (%),57.33333333333333
