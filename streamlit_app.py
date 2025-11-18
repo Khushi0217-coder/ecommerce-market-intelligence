@@ -1,4 +1,4 @@
-""
+"""
 E-commerce Market Intelligence & Recommendation System
 Complete Streamlit Dashboard with Real-time API Integration
 """
@@ -76,9 +76,6 @@ def load_survey_data():
         return df
     except:
         # Generate sample data if file not found
-        from faker import Faker
-        fake = Faker(['en_IN'])
-        
         indian_cities = [
             'Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai', 
             'Kolkata', 'Pune', 'Ahmedabad', 'Jaipur', 'Surat'
@@ -89,12 +86,17 @@ def load_survey_data():
             'laptop', 'tablet', 'smartwatch', 'speaker', 'powerbank'
         ]
         
+        names = [
+            'Rajesh Kumar', 'Priya Sharma', 'Amit Patel', 'Sneha Gupta',
+            'Vikram Singh', 'Anita Reddy', 'Rahul Mehta', 'Deepa Iyer'
+        ]
+        
         data = []
         for i in range(200):
             price_low = random.choice([1000, 2000, 5000, 10000, 15000])
             data.append({
                 'user_id': f'USER_{i+1:04d}',
-                'name': fake.name(),
+                'name': random.choice(names),
                 'age': random.randint(18, 65),
                 'city': random.choice(indian_cities),
                 'preferred_category': 'electronics',
@@ -124,6 +126,7 @@ def fetch_api_products():
                 variant['id'] = f"{product['id']}_V{i}"
                 variant['title'] = f"{product['title']} - Variant {i}"
                 if 'rating' in variant:
+                    variant['rating'] = variant['rating'].copy()
                     variant['rating']['rate'] = round(random.uniform(3.5, 5.0), 1)
                     variant['rating']['count'] = random.randint(50, 1000)
                 expanded.append(variant)
@@ -132,7 +135,7 @@ def fetch_api_products():
         products_data = []
         for p in expanded:
             products_data.append({
-                'product_id': p['id'],
+                'product_id': str(p['id']),
                 'title': p['title'],
                 'price': p.get('price', 0),
                 'category': p.get('category', 'electronics'),
@@ -149,13 +152,16 @@ def fetch_api_products():
 def calculate_score(price, rating, rating_count, user_price_low, user_price_high):
     """Calculate recommendation score"""
     mid_price = (user_price_low + user_price_high) / 2
-    price_distance = abs(price - mid_price) / mid_price
+    price_distance = abs(price - mid_price) / mid_price if mid_price > 0 else 0
     price_penalty = price_distance * 2
     score = (rating * np.log1p(rating_count)) - price_penalty
     return score
 
 def get_recommendations(user_row, df_products, top_n=3):
     """Get top N recommendations for a user"""
+    if len(df_products) == 0:
+        return pd.DataFrame()
+    
     buffer = 0.2
     price_low = user_row['expected_price_low'] * (1 - buffer)
     price_high = user_row['expected_price_high'] * (1 + buffer)
@@ -176,7 +182,7 @@ def get_recommendations(user_row, df_products, top_n=3):
         axis=1
     )
     
-    return candidates.nlargest(top_n, 'score')
+    return candidates.nlargest(min(top_n, len(candidates)), 'score')
 
 def calculate_metrics(df_survey, df_products):
     """Calculate all metrics"""
@@ -229,10 +235,10 @@ def calculate_metrics(df_survey, df_products):
     return {
         'category_coverage': category_coverage,
         'price_accuracy': price_accuracy,
-        'precision_1_keyword': np.mean(precision_1_keyword) * 100,
-        'precision_3_keyword': np.mean(precision_3_keyword) * 100,
-        'precision_1_price': np.mean(precision_1_price) * 100,
-        'precision_3_price': np.mean(precision_3_price) * 100
+        'precision_1_keyword': np.mean(precision_1_keyword) * 100 if precision_1_keyword else 0,
+        'precision_3_keyword': np.mean(precision_3_keyword) * 100 if precision_3_keyword else 0,
+        'precision_1_price': np.mean(precision_1_price) * 100 if precision_1_price else 0,
+        'precision_3_price': np.mean(precision_3_price) * 100 if precision_3_price else 0
     }
 
 # ============================================================================
@@ -263,7 +269,6 @@ st.markdown("---")
 # ============================================================================
 
 with st.sidebar:
-    st.image("https://img.icons8.com/fluency/96/000000/shopping-cart.png", width=80)
     st.title("📊 Dashboard Controls")
     
     st.markdown("### 📈 Quick Stats")
@@ -724,14 +729,3 @@ elif page == "📋 Data Tables":
         
         with col1:
             st.write("**Numeric Summary**")
-            st.dataframe(df_products.describe())
-        
-        with col2:
-            st.write("**Product Insights**")
-            st.write(f"**Price Range:** ₹{df_products['price'].min():,.2f} - ₹{df_products['price'].max():,.2f}")
-            st.write(f"**Average Rating:** {df_products['rating'].mean():.2f}/5.0")
-            st.write(f"**Total Reviews:** {df_products['rating_count'].sum():,}")
-
-# ============================================================================
-# FOOTER
-# ============================================================================
