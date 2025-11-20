@@ -791,15 +791,17 @@ if page == "📊 Overview":
             <div class="stats-delta">▲ +{len(df_products)} Variants</div>
         </div>
         """, unsafe_allow_html=True)
-    
+
+
     with col3:
     avg_budget = df_survey['expected_price_high'].mean()
     st.markdown(f"""
     <div class="stats-card">
         <div class="stats-icon">💰</div>
         <div class="stats-number">₹{avg_budget:,.0f}</div>
-        <div class="stats-label">Avg Customer Budget</div>
-        <div class="stats-delta">▲ Stable Demand</div>
+        <div class="stats-label">Avg Budget</div>
+        <div class="stats-delta">▲ Stable Trends</div>
     </div>
     """, unsafe_allow_html=True)
+
 
