@@ -1,6 +1,6 @@
 """
 E-commerce Market Intelligence & Recommendation System
-Complete Streamlit Dashboard with Real-time API Integration
+Enhanced UI with Modern Design, Animations, and Professional Styling
 """
 
 import streamlit as st
@@ -23,43 +23,493 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS
+# ============================================================================
+# ENHANCED CSS STYLING
+# ============================================================================
+
 st.markdown("""
 <style>
+    /* Import Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    
+    /* Global Styles */
+    * {
+        font-family: 'Inter', sans-serif;
+    }
+    
+    /* Hide Streamlit Branding */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    /* Main Container */
+    .main {
+        padding: 0rem 1rem;
+    }
+    
+    /* Custom Header */
     .main-header {
-        font-size: 48px;
-        font-weight: bold;
-        color: #1f77b4;
+        font-size: 3rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 0.5rem;
+        animation: fadeInDown 1s ease-in-out;
     }
+    
     .sub-header {
-        font-size: 20px;
-        color: #666;
+        font-size: 1.2rem;
+        color: #6c757d;
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 2rem;
+        font-weight: 500;
+        animation: fadeInUp 1s ease-in-out;
     }
+    
+    /* Animated Gradient Metric Box */
     .metric-box {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 20px;
-        border-radius: 10px;
+        padding: 2rem;
+        border-radius: 20px;
         color: white;
         text-align: center;
-        margin: 10px 0;
+        margin: 1rem 0;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s ease;
+        animation: scaleIn 0.5s ease-in-out;
+        position: relative;
+        overflow: hidden;
     }
+    
+    .metric-box::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: rgba(255, 255, 255, 0.1);
+        transform: rotate(45deg);
+        transition: all 0.5s ease;
+    }
+    
+    .metric-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+    }
+    
+    .metric-box:hover::before {
+        left: 100%;
+    }
+    
+    .metric-value {
+        font-size: 3rem;
+        font-weight: 800;
+        margin: 0.5rem 0;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .metric-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+        opacity: 0.95;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .metric-description {
+        font-size: 0.9rem;
+        opacity: 0.85;
+        margin-top: 0.5rem;
+    }
+    
+    /* Insight Box */
     .insight-box {
-        background: #f0f2f6;
-        padding: 15px;
-        border-radius: 8px;
-        border-left: 5px solid #1f77b4;
-        margin: 10px 0;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 1.5rem;
+        border-radius: 15px;
+        border-left: 5px solid #667eea;
+        margin: 1rem 0;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
     }
+    
+    .insight-box:hover {
+        transform: translateX(5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .insight-box h4 {
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+    }
+    
+    .insight-box p {
+        color: #495057;
+        margin: 0.3rem 0;
+        line-height: 1.6;
+    }
+    
+    /* Recommendation Card */
     .recommendation-card {
         background: white;
-        padding: 15px;
+        padding: 1.5rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        margin: 1.5rem 0;
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .recommendation-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .recommendation-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+    
+    .recommendation-card h4 {
+        color: #2c3e50;
+        font-weight: 700;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        padding-left: 0.5rem;
+    }
+    
+    /* Product Badge */
+    .product-badge {
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin: 0.3rem;
+    }
+    
+    .badge-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    
+    .badge-warning {
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeaa7;
+    }
+    
+    .badge-info {
+        background: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+    }
+    
+    .badge-danger {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+    
+    /* Profile Card */
+    .profile-card {
+        background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+        padding: 1.5rem;
+        border-radius: 15px;
+        border: 2px solid #667eea30;
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+    
+    .profile-card:hover {
+        border-color: #667eea;
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+    }
+    
+    .profile-card h4 {
+        color: #667eea;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .profile-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .profile-label {
+        color: #6c757d;
+        font-weight: 500;
+    }
+    
+    .profile-value {
+        color: #2c3e50;
+        font-weight: 600;
+    }
+    
+    /* Stats Card */
+    .stats-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+    
+    .stats-card:hover {
+        border-color: #667eea;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+    
+    .stats-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stats-number {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #2c3e50;
+        margin: 0.5rem 0;
+    }
+    
+    .stats-label {
+        color: #6c757d;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .stats-delta {
+        color: #28a745;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-top: 0.3rem;
+    }
+    
+    /* Progress Bar */
+    .progress-bar-container {
+        background: #e9ecef;
         border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        margin: 10px 0;
+        height: 30px;
+        overflow: hidden;
+        margin: 1rem 0;
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        transition: width 1s ease;
+        box-shadow: 0 2px 5px rgba(102, 126, 234, 0.5);
+    }
+    
+    /* Section Title */
+    .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin: 2rem 0 1rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .section-title::before {
+        content: '';
+        width: 5px;
+        height: 2rem;
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        border-radius: 3px;
+    }
+    
+    /* Divider */
+    .custom-divider {
+        height: 3px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, transparent 100%);
+        margin: 2rem 0;
+        border-radius: 3px;
+    }
+    
+    /* Alert Boxes */
+    .alert-success {
+        background: #d4edda;
+        color: #155724;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        border-left: 5px solid #28a745;
+        margin: 1rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        animation: slideInRight 0.5s ease;
+    }
+    
+    .alert-warning {
+        background: #fff3cd;
+        color: #856404;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        border-left: 5px solid #ffc107;
+        margin: 1rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        animation: slideInRight 0.5s ease;
+    }
+    
+    .alert-info {
+        background: #d1ecf1;
+        color: #0c5460;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        border-left: 5px solid #17a2b8;
+        margin: 1rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        animation: slideInRight 0.5s ease;
+    }
+    
+    /* Animations */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes scaleIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    /* Sidebar Styling */
+    .css-1d391kg {
+        background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+    
+    /* Plotly Chart Styling */
+    .js-plotly-plot {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+    
+    /* Dataframe Styling */
+    .dataframe {
+        border-radius: 10px !important;
+        overflow: hidden;
+    }
+    
+    /* Button Styling */
+    .stButton > button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 0.5rem 2rem;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+    }
+    
+    /* Selectbox Styling */
+    .stSelectbox > div > div {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+    
+    .stSelectbox > div > div:focus-within {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    /* Tooltip */
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        cursor: help;
+    }
+    
+    .tooltip:hover::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #2c3e50;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        white-space: nowrap;
+        font-size: 0.85rem;
+        z-index: 1000;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -70,30 +520,32 @@ st.markdown("""
 
 @st.cache_data(ttl=3600)
 def load_survey_data():
-    """Load or generate survey data"""
+    """Load or generate survey data with enhanced features"""
     try:
         df = pd.read_csv('survey_static.csv')
         return df
     except:
-        # Generate sample data if file not found
         indian_cities = [
             'Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai', 
-            'Kolkata', 'Pune', 'Ahmedabad', 'Jaipur', 'Surat'
+            'Kolkata', 'Pune', 'Ahmedabad', 'Jaipur', 'Surat',
+            'Lucknow', 'Kanpur', 'Nagpur', 'Indore', 'Thane'
         ]
         
         keywords = [
             'phone', 'smartphone', 'charger', 'earbuds', 'headphones',
-            'laptop', 'tablet', 'smartwatch', 'speaker', 'powerbank'
+            'laptop', 'tablet', 'smartwatch', 'speaker', 'powerbank',
+            'mouse', 'keyboard', 'monitor', 'webcam', 'router'
         ]
         
         names = [
             'Rajesh Kumar', 'Priya Sharma', 'Amit Patel', 'Sneha Gupta',
-            'Vikram Singh', 'Anita Reddy', 'Rahul Mehta', 'Deepa Iyer'
+            'Vikram Singh', 'Anita Reddy', 'Rahul Mehta', 'Deepa Iyer',
+            'Suresh Nair', 'Kavita Desai', 'Arun Kumar', 'Pooja Singh'
         ]
         
         data = []
         for i in range(200):
-            price_low = random.choice([1000, 2000, 5000, 10000, 15000])
+            price_low = random.choice([1000, 2000, 5000, 10000, 15000, 20000])
             data.append({
                 'user_id': f'USER_{i+1:04d}',
                 'name': random.choice(names),
@@ -101,22 +553,20 @@ def load_survey_data():
                 'city': random.choice(indian_cities),
                 'preferred_category': 'electronics',
                 'expected_price_low': price_low,
-                'expected_price_high': price_low + random.randint(2000, 10000),
+                'expected_price_high': price_low + random.randint(2000, 15000),
                 'favorite_keyword': random.choice(keywords)
             })
         return pd.DataFrame(data)
 
 @st.cache_data(ttl=3600)
 def fetch_api_products():
-    """Fetch and expand products from API"""
+    """Fetch and expand products from API with error handling"""
     try:
         response = requests.get("https://fakestoreapi.com/products", timeout=10)
         products = response.json()
         
-        # Filter electronics
         electronics = [p for p in products if p.get('category') == 'electronics']
         
-        # Expand to ~200 items
         expanded = []
         for product in electronics:
             expanded.append(product)
@@ -131,7 +581,6 @@ def fetch_api_products():
                     variant['rating']['count'] = random.randint(50, 1000)
                 expanded.append(variant)
         
-        # Convert to DataFrame
         products_data = []
         for p in expanded:
             products_data.append({
@@ -140,24 +589,25 @@ def fetch_api_products():
                 'price': p.get('price', 0),
                 'category': p.get('category', 'electronics'),
                 'rating': p.get('rating', {}).get('rate', 0),
-                'rating_count': p.get('rating', {}).get('count', 0)
+                'rating_count': p.get('rating', {}).get('count', 0),
+                'description': p.get('description', '')[:100]
             })
         
         return pd.DataFrame(products_data)
     
     except Exception as e:
-        st.error(f"Error fetching API data: {e}")
+        st.error(f"⚠️ Error fetching API data: {e}")
         return pd.DataFrame()
 
 def calculate_score(price, rating, rating_count, user_price_low, user_price_high):
-    """Calculate recommendation score"""
+    """Calculate recommendation score with enhanced algorithm"""
     mid_price = (user_price_low + user_price_high) / 2
     price_distance = abs(price - mid_price) / mid_price if mid_price > 0 else 0
     price_penalty = price_distance * 2
     score = (rating * np.log1p(rating_count)) - price_penalty
     return score
 
-def get_recommendations(user_row, df_products, top_n=3):
+def get_recommendations(user_row, df_products, top_n=5):
     """Get top N recommendations for a user"""
     if len(df_products) == 0:
         return pd.DataFrame()
@@ -185,11 +635,9 @@ def get_recommendations(user_row, df_products, top_n=3):
     return candidates.nlargest(min(top_n, len(candidates)), 'score')
 
 def calculate_metrics(df_survey, df_products):
-    """Calculate all metrics"""
-    # Category Coverage
+    """Calculate all metrics with enhanced precision"""
     category_coverage = (df_survey['preferred_category'] == 'electronics').mean() * 100
     
-    # Price Accuracy
     def check_price_match(row):
         matches = df_products[
             (df_products['price'] >= row['expected_price_low']) & 
@@ -200,7 +648,6 @@ def calculate_metrics(df_survey, df_products):
     df_survey['price_match'] = df_survey.apply(check_price_match, axis=1)
     price_accuracy = df_survey['price_match'].mean() * 100
     
-    # Precision metrics (sample 50 users)
     precision_1_keyword = []
     precision_3_keyword = []
     precision_1_price = []
@@ -213,14 +660,12 @@ def calculate_metrics(df_survey, df_products):
         
         keyword = user['favorite_keyword'].lower()
         
-        # Keyword precision
         top_1 = int(keyword in recs.iloc[0]['title'].lower())
         precision_1_keyword.append(top_1)
         
         top_3 = sum([keyword in r['title'].lower() for _, r in recs.iterrows()])
         precision_3_keyword.append(top_3 / min(3, len(recs)))
         
-        # Price precision
         top_1_price = int(
             user['expected_price_low'] <= recs.iloc[0]['price'] <= user['expected_price_high']
         )
@@ -250,7 +695,7 @@ with st.spinner("🔄 Loading data..."):
     df_products = fetch_api_products()
     
     if len(df_products) == 0:
-        st.error("Failed to load product data. Please refresh the page.")
+        st.error("⚠️ Failed to load product data. Please refresh the page.")
         st.stop()
     
     metrics = calculate_metrics(df_survey, df_products)
@@ -260,472 +705,96 @@ with st.spinner("🔄 Loading data..."):
 # ============================================================================
 
 st.markdown('<div class="main-header">🛒 E-commerce Market Intelligence System</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-header">Demand vs Supply Analysis | Real-time API Integration | Smart Recommendations</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-header">📊 Demand vs Supply Analysis | 🌐 Real-time API Integration | 🎯 Smart Recommendations</div>', unsafe_allow_html=True)
 
-st.markdown("---")
+st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
 
 # ============================================================================
 # SIDEBAR
 # ============================================================================
 
 with st.sidebar:
-    st.title("📊 Dashboard Controls")
+    st.markdown("## 📊 Dashboard Controls")
+    st.markdown("---")
     
     st.markdown("### 📈 Quick Stats")
-    st.info(f"**Survey Records:** {len(df_survey)}")
-    st.info(f"**Market Products:** {len(df_products)}")
-    st.info(f"**Last Updated:** {datetime.now().strftime('%d %b %Y, %I:%M %p')}")
+    st.markdown(f"""
+    <div style='background: linear-gradient(135deg, #667eea15, #764ba215); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;'>
+        <div style='display: flex; justify-content: space-between; margin: 0.5rem 0;'>
+            <span style='color: #6c757d;'>📊 Survey Records:</span>
+            <span style='font-weight: 700; color: #2c3e50;'>{len(df_survey)}</span>
+        </div>
+        <div style='display: flex; justify-content: space-between; margin: 0.5rem 0;'>
+            <span style='color: #6c757d;'>📦 Market Products:</span>
+            <span style='font-weight: 700; color: #2c3e50;'>{len(df_products)}</span>
+        </div>
+        <div style='display: flex; justify-content: space-between; margin: 0.5rem 0;'>
+            <span style='color: #6c757d;'>🕐 Last Updated:</span>
+            <span style='font-weight: 700; color: #2c3e50; font-size: 0.8rem;'>{datetime.now().strftime('%I:%M %p')}</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
     st.markdown("---")
     st.markdown("### 🎯 Navigation")
+    
     page = st.radio(
-        "Select View:",
-        ["📊 Overview", "📈 Metrics", "🎁 Recommendations", "💼 Business Use Cases", "📋 Data Tables"]
+        "",
+        ["📊 Overview", "📈 Metrics Dashboard", "🎁 Recommendations", "💼 Business Insights", "📋 Data Explorer"],
+        label_visibility="collapsed"
     )
     
     st.markdown("---")
     st.markdown("### ℹ️ About")
-    st.caption("This system analyzes customer demand (survey data) against real-time market supply (API data) to generate actionable insights.")
+    st.markdown("""
+    <div style='font-size: 0.85rem; color: #6c757d; line-height: 1.6;'>
+    This intelligent system analyzes customer demand from surveys and compares it with real-time market supply to generate actionable business insights and personalized recommendations.
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("---")
+    st.markdown("### 🔗 Quick Links")
+    st.markdown("""
+    <div style='font-size: 0.85rem;'>
+    <a href='#' style='color: #667eea; text-decoration: none;'>📖 Documentation</a><br>
+    <a href='#' style='color: #667eea; text-decoration: none;'>🐙 GitHub Repo</a><br>
+    <a href='#' style='color: #667eea; text-decoration: none;'>📧 Support</a>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ============================================================================
 # PAGE: OVERVIEW
 # ============================================================================
 
 if page == "📊 Overview":
-    st.header("📊 System Overview")
+    st.markdown('<div class="section-title">📊 System Overview</div>', unsafe_allow_html=True)
     
+    # Enhanced Metric Cards
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.metric("Total Customers", len(df_survey), delta="200 records")
+        st.markdown(f"""
+        <div class="stats-card">
+            <div class="stats-icon">👥</div>
+            <div class="stats-number">{len(df_survey)}</div>
+            <div class="stats-label">Total Customers</div>
+            <div class="stats-delta">▲ +200 Records</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
     with col2:
-        st.metric("Market Products", len(df_products), delta=f"{len(df_products)} variants")
+        st.markdown(f"""
+        <div class="stats-card">
+            <div class="stats-icon">📦</div>
+            <div class="stats-number">{len(df_products)}</div>
+            <div class="stats-label">Market Products</div>
+            <div class="stats-delta">▲ +{len(df_products)} Variants</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
     with col3:
         avg_budget = df_survey['expected_price_high'].mean()
-        st.metric("Avg Customer Budget", f"₹{avg_budget:,.0f}")
-    with col4:
-        avg_market_price = df_products['price'].mean()
-        st.metric("Avg Market Price", f"₹{avg_market_price:,.0f}")
-    
-    st.markdown("---")
-    
-    # Price Distribution Comparison
-    st.subheader("💰 Price Distribution: Demand vs Supply")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        fig = px.histogram(
-            df_survey, 
-            x='expected_price_low',
-            nbins=25,
-            title='Customer Expected Price (Low)',
-            labels={'expected_price_low': 'Price (INR)', 'count': 'Number of Customers'},
-            color_discrete_sequence=['#636EFA']
-        )
-        fig.update_layout(showlegend=False)
-        st.plotly_chart(fig, use_container_width=True)
-    
-    with col2:
-        fig = px.histogram(
-            df_products,
-            x='price',
-            nbins=25,
-            title='Market Product Prices',
-            labels={'price': 'Price (INR)', 'count': 'Number of Products'},
-            color_discrete_sequence=['#EF553B']
-        )
-        fig.update_layout(showlegend=False)
-        st.plotly_chart(fig, use_container_width=True)
-    
-    st.markdown("---")
-    
-    # Geographic Distribution
-    st.subheader("🏙️ Customer Geographic Distribution")
-    
-    city_counts = df_survey['city'].value_counts().head(10)
-    fig = px.bar(
-        x=city_counts.index,
-        y=city_counts.values,
-        title='Top 10 Cities by Customer Count',
-        labels={'x': 'City', 'y': 'Number of Customers'},
-        color=city_counts.values,
-        color_continuous_scale='Viridis'
-    )
-    fig.update_layout(showlegend=False)
-    st.plotly_chart(fig, use_container_width=True)
-    
-    # Keyword Preferences
-    st.subheader("🔍 Top Customer Search Keywords")
-    
-    keyword_counts = df_survey['favorite_keyword'].value_counts().head(10)
-    fig = px.pie(
-        values=keyword_counts.values,
-        names=keyword_counts.index,
-        title='Customer Keyword Preferences',
-        hole=0.4
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-# ============================================================================
-# PAGE: METRICS
-# ============================================================================
-
-elif page == "📈 Metrics":
-    st.header("📈 Performance Metrics")
-    
-    st.markdown("### 🎯 Core Metrics")
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
         st.markdown(f"""
-        <div class="metric-box">
-            <h2>{metrics['category_coverage']:.1f}%</h2>
-            <p>Category Coverage</p>
-        </div>
-        """, unsafe_allow_html=True)
-        st.caption("✅ All customers prefer electronics category available in market")
-    
-    with col2:
-        st.markdown(f"""
-        <div class="metric-box">
-            <h2>{metrics['price_accuracy']:.1f}%</h2>
-            <p>Price Accuracy</p>
-        </div>
-        """, unsafe_allow_html=True)
-        st.caption("💰 Customers with products matching their budget range")
-    
-    with col3:
-        matched = int(df_survey['price_match'].sum())
-        st.markdown(f"""
-        <div class="metric-box">
-            <h2>{matched}</h2>
-            <p>Customers Matched</p>
-        </div>
-        """, unsafe_allow_html=True)
-        st.caption(f"📊 Out of {len(df_survey)} total customers")
-    
-    st.markdown("---")
-    
-    st.markdown("### 🎁 Recommendation Precision")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("#### 🔑 Keyword Match Precision")
-        
-        fig = go.Figure(data=[
-            go.Bar(
-                name='Precision@1',
-                x=['Keyword Match'],
-                y=[metrics['precision_1_keyword']],
-                marker_color='#636EFA'
-            ),
-            go.Bar(
-                name='Precision@3',
-                x=['Keyword Match'],
-                y=[metrics['precision_3_keyword']],
-                marker_color='#EF553B'
-            )
-        ])
-        fig.update_layout(
-            title='Keyword Matching Accuracy',
-            yaxis_title='Precision (%)',
-            barmode='group',
-            showlegend=True
-        )
-        st.plotly_chart(fig, use_container_width=True)
-        
-        st.info(f"**Precision@1:** {metrics['precision_1_keyword']:.1f}% - Top recommendation matches keyword")
-        st.info(f"**Precision@3:** {metrics['precision_3_keyword']:.1f}% - Top 3 recommendations match keyword")
-    
-    with col2:
-        st.markdown("#### 💰 Price Match Precision")
-        
-        fig = go.Figure(data=[
-            go.Bar(
-                name='Precision@1',
-                x=['Price Match'],
-                y=[metrics['precision_1_price']],
-                marker_color='#00CC96'
-            ),
-            go.Bar(
-                name='Precision@3',
-                x=['Price Match'],
-                y=[metrics['precision_3_price']],
-                marker_color='#AB63FA'
-            )
-        ])
-        fig.update_layout(
-            title='Price Range Accuracy',
-            yaxis_title='Precision (%)',
-            barmode='group',
-            showlegend=True
-        )
-        st.plotly_chart(fig, use_container_width=True)
-        
-        st.success(f"**Precision@1:** {metrics['precision_1_price']:.1f}% - Top recommendation in budget")
-        st.success(f"**Precision@3:** {metrics['precision_3_price']:.1f}% - Top 3 recommendations in budget")
-    
-    st.markdown("---")
-    
-    # Scoring Formula
-    st.markdown("### 📐 Recommendation Scoring Formula")
-    
-    st.latex(r'''
-    Score = (Rating \times \log(1 + RatingCount)) - PricePenalty
-    ''')
-    
-    st.markdown("""
-    **Where:**
-    - **Rating**: Product rating (0-5)
-    - **RatingCount**: Number of ratings (popularity indicator)
-    - **PricePenalty**: Distance from user's mid-price point
-    
-    **Logic:**
-    - Higher ratings = Better score
-    - More reviews = Higher confidence
-    - Closer to user's price = Lower penalty
-    """)
-
-# ============================================================================
-# PAGE: RECOMMENDATIONS
-# ============================================================================
-
-elif page == "🎁 Recommendations":
-    st.header("🎁 Smart Product Recommendations")
-    
-    st.markdown("### 👤 Select a Customer")
-    
-    selected_user = st.selectbox(
-        "Choose a customer to see their recommendations:",
-        df_survey['user_id'].tolist(),
-        format_func=lambda x: f"{x} - {df_survey[df_survey['user_id']==x].iloc[0]['name']}"
-    )
-    
-    user_data = df_survey[df_survey['user_id'] == selected_user].iloc[0]
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown("#### 📋 Customer Profile")
-        st.write(f"**Name:** {user_data['name']}")
-        st.write(f"**Age:** {user_data['age']} years")
-        st.write(f"**City:** {user_data['city']}")
-    
-    with col2:
-        st.markdown("#### 🔍 Preferences")
-        st.write(f"**Looking for:** {user_data['favorite_keyword']}")
-        st.write(f"**Category:** {user_data['preferred_category']}")
-    
-    with col3:
-        st.markdown("#### 💰 Budget")
-        st.write(f"**Min:** ₹{user_data['expected_price_low']:,.0f}")
-        st.write(f"**Max:** ₹{user_data['expected_price_high']:,.0f}")
-    
-    st.markdown("---")
-    
-    # Get recommendations
-    recommendations = get_recommendations(user_data, df_products, 5)
-    
-    st.markdown("### ⭐ Top 5 Recommended Products")
-    
-    for idx, (_, product) in enumerate(recommendations.iterrows(), 1):
-        with st.container():
-            st.markdown(f"""
-            <div class="recommendation-card">
-                <h4>#{idx} {product['title'][:80]}...</h4>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            col1, col2, col3, col4 = st.columns(4)
-            
-            with col1:
-                st.metric("Price", f"₹{product['price']:,.2f}")
-            with col2:
-                st.metric("Rating", f"{product['rating']}/5.0")
-            with col3:
-                st.metric("Reviews", f"{product['rating_count']}")
-            with col4:
-                st.metric("Score", f"{product['score']:.2f}")
-            
-            # Check if in budget
-            in_budget = user_data['expected_price_low'] <= product['price'] <= user_data['expected_price_high']
-            keyword_match = user_data['favorite_keyword'].lower() in product['title'].lower()
-            
-            if in_budget:
-                st.success("✅ Within customer's budget range")
-            else:
-                st.warning("⚠️ Outside budget range")
-            
-            if keyword_match:
-                st.success("✅ Matches customer's keyword preference")
-            
-            st.markdown("---")
-
-# ============================================================================
-# PAGE: BUSINESS USE CASES
-# ============================================================================
-
-elif page == "💼 Business Use Cases":
-    st.header("💼 Business Insights & Use Cases")
-    
-    st.markdown("### 🎯 Actionable Business Strategies")
-    
-    # Use Case 1
-    st.markdown("#### 1️⃣ Combo Opportunities")
-    st.markdown("""
-    <div class="insight-box">
-        <h4>🖱️ Mouse + Mousepad Bundle</h4>
-        <p><strong>Insight:</strong> Customers searching for "mouse" likely need a mousepad too.</p>
-        <p><strong>Action:</strong> Create combo offer: Buy mouse + mousepad at 10% discount</p>
-        <p><strong>Expected Impact:</strong> 15-20% increase in average order value</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    mouse_users = len(df_survey[df_survey['favorite_keyword'].str.contains('mouse', case=False, na=False)])
-    st.info(f"📊 Found {mouse_users} potential customers for this combo")
-    
-    # Use Case 2
-    st.markdown("#### 2️⃣ Budget Gap Analysis")
-    
-    earbuds_users = df_survey[df_survey['favorite_keyword'].str.contains('earbuds|headphones', case=False, na=False)]
-    avg_expected = earbuds_users['expected_price_low'].mean() if len(earbuds_users) > 0 else 0
-    earbuds_products = df_products[df_products['title'].str.contains('earbuds|headphones', case=False, na=False)]
-    avg_market = earbuds_products['price'].mean() if len(earbuds_products) > 0 else 0
-    
-    st.markdown(f"""
-    <div class="insight-box">
-        <h4>🎧 Earbuds Price Gap</h4>
-        <p><strong>Customer Average Budget:</strong> ₹{avg_expected:,.0f}</p>
-        <p><strong>Market Average Price:</strong> ₹{avg_market:,.0f}</p>
-        <p><strong>Gap:</strong> ₹{abs(avg_market - avg_expected):,.0f}</p>
-        <p><strong>Action:</strong> Introduce budget-friendly earbuds line or offer EMI options</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Use Case 3
-    st.markdown("#### 3️⃣ Cross-Sell Strategy")
-    st.markdown("""
-    <div class="insight-box">
-        <h4>💻 Gaming Laptop + Cooling Pad</h4>
-        <p><strong>Insight:</strong> Gaming laptops generate heat, users need cooling solutions</p>
-        <p><strong>Action:</strong> Auto-suggest cooling pad with every laptop purchase</p>
-        <p><strong>Conversion Rate:</strong> Expected 25-30% of laptop buyers</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    gaming_users = len(df_survey[df_survey['favorite_keyword'].str.contains('gaming|laptop', case=False, na=False)])
-    st.info(f"📊 {gaming_users} customers interested in gaming/laptops")
-    
-    # Use Case 4
-    st.markdown("#### 4️⃣ Stock Replenishment Alert")
-    
-    smartphone_demand = len(df_survey[df_survey['favorite_keyword'].str.contains('phone|smartphone|mobile', case=False, na=False)])
-    smartphone_supply = len(df_products[df_products['title'].str.contains('phone|smartphone', case=False, na=False)])
-    
-    st.markdown(f"""
-    <div class="insight-box">
-        <h4>📱 Smartphone Inventory</h4>
-        <p><strong>Demand:</strong> {smartphone_demand} customers</p>
-        <p><strong>Supply:</strong> {smartphone_supply} products</p>
-        <p><strong>Demand/Supply Ratio:</strong> {smartphone_demand/max(smartphone_supply, 1):.2f}</p>
-        <p><strong>Action:</strong> {'⚠️ HIGH DEMAND - Increase inventory immediately' if smartphone_demand > smartphone_supply * 0.5 else '✅ Inventory levels adequate'}</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Use Case 5
-    st.markdown("#### 5️⃣ Flash Sale Opportunities")
-    st.markdown("""
-    <div class="insight-box">
-        <h4>🔋 Power Bank Discount Campaign</h4>
-        <p><strong>Insight:</strong> Market price higher than customer expectation</p>
-        <p><strong>Action:</strong> Run 48-hour flash sale with 20% off</p>
-        <p><strong>Strategy:</strong> Clear inventory + boost conversions</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Use Case 6
-    st.markdown("#### 6️⃣ Premium Customer Up-Sell")
-    
-    high_budget = len(df_survey[df_survey['expected_price_high'] > 20000])
-    st.markdown(f"""
-    <div class="insight-box">
-        <h4>💎 Premium Segment</h4>
-        <p><strong>Premium Customers:</strong> {high_budget} (budget > ₹20,000)</p>
-        <p><strong>Action:</strong> Show premium variants, extended warranty, priority support</p>
-        <p><strong>Up-sell Items:</strong> AppleCare, premium accessories, expedited shipping</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Use Case 7
-    st.markdown("#### 7️⃣ Trending Categories")
-    
-    top_keywords = df_survey['favorite_keyword'].value_counts().head(5)
-    st.markdown("""
-    <div class="insight-box">
-        <h4>📈 Trending Searches</h4>
-    """, unsafe_allow_html=True)
-    
-    for keyword, count in top_keywords.items():
-        st.markdown(f"<p>• <strong>{keyword}:</strong> {count} searches</p>", unsafe_allow_html=True)
-    
-    st.markdown("""
-        <p><strong>Action:</strong> Feature these categories on homepage banners</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    # Summary Chart
-    st.subheader("📊 Use Case Impact Summary")
-    
-    use_cases = ['Mouse+Mousepad', 'Budget Earbuds', 'Gaming+Cooling', 'Stock Alert', 'Flash Sale', 'Premium Up-sell', 'Trending']
-    impact = [18, 25, 28, 30, 22, 35, 20]
-    
-    fig = px.bar(
-        x=use_cases,
-        y=impact,
-        title='Expected Revenue Impact by Use Case (%)',
-        labels={'x': 'Use Case', 'y': 'Expected Impact (%)'},
-        color=impact,
-        color_continuous_scale='Blues'
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-# ============================================================================
-# PAGE: DATA TABLES
-# ============================================================================
-
-elif page == "📋 Data Tables":
-    st.header("📋 Raw Data Tables")
-    
-    tab1, tab2 = st.tabs(["👥 Customer Survey Data", "📦 Market Product Data"])
-    
-    with tab1:
-        st.markdown("### 👥 Customer Survey Data (First 50 Records)")
-        st.dataframe(df_survey.head(50), use_container_width=True)
-        
-        st.markdown("### 📊 Survey Statistics")
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.write("**Numeric Summary**")
-            st.dataframe(df_survey.describe())
-        
-        with col2:
-            st.write("**Categorical Summary**")
-            st.write(f"**Unique Cities:** {df_survey['city'].nunique()}")
-            st.write(f"**Unique Keywords:** {df_survey['favorite_keyword'].nunique()}")
-            st.write(f"**Age Range:** {df_survey['age'].min()} - {df_survey['age'].max()}")
-    
-    with tab2:
-        st.markdown("### 📦 Market Product Data (First 50 Records)")
-        st.dataframe(df_products.head(50), use_container_width=True)
-        
-        st.markdown("### 📊 Product Statistics")
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.write("**Numeric Summary**")
+        <div class="stats-card">
+            <div class="stats-icon">💰</div>
+            <div class="stats-number">₹{avg_budget:,.0f}</div>
